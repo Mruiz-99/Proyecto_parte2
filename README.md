@@ -1,50 +1,83 @@
-## Universidad de San Carlos de Guatemala
-## Escuela de estudios de postgrado
-## Maestría en ingeniería para la industria con especialización en ciencias de la computación
-## Introducción al análisis de datos
-## No carne: 999014035
-## Proyecto 1
-------
+# Universidad de San Carlos de Guatemala
+## Escuela de Estudios de Postgrado
+### Maestría en ingeniería para la industria con especialización en ciencias de la computación
+#### Introducción al análisis de datos
+#### No carne: 999014035
+#### Proyecto 2
 
-### Temática: Encuesta nacional de empelo - énfasis hogares
+---
+
+## Temática: Encuesta nacional de empleo - Énfasis hogares
+
+---
+
 # Documentación Técnica
 
 ## 1. Bibliotecas Utilizadas
 
-- **readxl**: Permite cargar datos desde archivos Excel (.xlsx), una función esencial para importar datos sin necesidad de convertirlos a otros formatos intermedios.
-- **arules**: Proporciona herramientas para el análisis de asociaciones, particularmente útiles para implementar el algoritmo Apriori. Facilita la creación y visualización de reglas de asociación, ayudando a identificar patrones en conjuntos de datos transaccionales.
-- **ggplot2**: Utilizada para generar gráficos en 2D, esta biblioteca facilita la visualización de los resultados de clustering, lo cual es esencial para interpretar los grupos de datos y su distribución.
-- **plotly**: Permite la creación de gráficos interactivos en 3D, una herramienta clave para visualizar el análisis de clustering en un espacio tridimensional y ofrecer una representación más detallada de las relaciones entre las variables.
+- **rpart**: Implementa árboles de decisión, permitiendo generar modelos de clasificación con alta interpretabilidad.
+- **randomForest**: Ofrece herramientas para construir bosques aleatorios, mejorando la robustez y precisión de las predicciones.
+- **tensorflow**: Utilizado para implementar y entrenar redes neuronales en Python, ofreciendo flexibilidad y rendimiento.
+- **numpy y pandas**: Proveen manejo eficiente de datos y estructuras para su análisis.
+- **scikit-learn**: Facilita el preprocesamiento de datos, la evaluación de modelos y el cálculo de métricas de desempeño.
+
+---
 
 ## 2. Preparación y Preprocesamiento de Datos
 
-Para asegurar que los datos sean adecuados para el análisis, se realizó un preprocesamiento que incluyó la carga y selección de columnas específicas relacionadas con el material del piso, cantidad de cuartos, y la fuente de energía utilizada en el hogar. Este paso fue crucial para enfocar el análisis en variables que afectan directamente el acceso a servicios básicos y la calidad de vida en los hogares guatemaltecos.
+Para garantizar la calidad del análisis, se realizaron las siguientes etapas de preprocesamiento:
 
-Además, los datos fueron escalados en el análisis de clustering para evitar que diferencias en la escala de las variables afecten los resultados de segmentación. Esto permite que las distancias en el espacio de clustering sean más representativas de las diferencias reales entre los datos.
+- **Selección de variables relevantes**: Se seleccionaron las características clave relacionadas con:
+  - Material predominante del piso (P02A04)
+  - Tipo de servicio sanitario (P02B07)
+  - Fuente de energía para cocinar (P02B05)
+  - Área geográfica (areag)
+  - Tratamiento del agua para beber (P02B04)
+- **Imputación de datos faltantes**: Los valores faltantes fueron imputados utilizando la moda de cada columna para mantener la consistencia del conjunto de datos.
+- **Transformación de variables**: Se codificaron las variables categóricas en factores y las numéricas fueron escaladas cuando se utilizaron métodos basados en distancias.
+- **División de datos**: El conjunto fue dividido en datos de entrenamiento (80%) y prueba (20%) para evaluar la capacidad predictiva de los modelos.
+
+---
 
 ## 3. Metodología
 
-### Análisis de Reglas de Asociación con Apriori
-Se empleó el algoritmo Apriori para identificar relaciones frecuentes entre diferentes características del hogar. Este análisis ayuda a descubrir patrones de comportamiento, como la correlación entre el tipo de material del piso y el tipo de energía utilizado para cocinar. Los resultados proporcionan información sobre las condiciones de vida y las preferencias en el uso de recursos en hogares específicos.
+### Árboles de Decisión
+El análisis utilizó el algoritmo de árboles de decisión (`rpart`) para generar modelos de clasificación. Esto permitió:
+- Identificar reglas claras basadas en las características de los hogares.
+- Visualizar las relaciones jerárquicas entre variables.
 
-### Clustering con K-Means
-El algoritmo de clustering K-Means fue utilizado para segmentar los hogares en grupos con características similares. El número óptimo de clústeres fue determinado utilizando el método del codo, lo cual implica evaluar la suma de cuadrados dentro de los clústeres a medida que se incrementa el número de clústeres. Esta técnica permite identificar un valor de K que minimiza la variabilidad dentro de cada clúster y maximiza la distancia entre los clústeres.
+### Bosques Aleatorios
+Los bosques aleatorios (`randomForest`) combinaron múltiples árboles para mejorar la precisión y reducir el sesgo y la varianza. Se ajustaron los siguientes hiperparámetros:
+- Número de árboles: 100.
+- Profundidad máxima: Automática, basada en el criterio de Gini.
 
-La visualización de los clústeres se realizó tanto en 2D como en 3D para facilitar la interpretación de los grupos formados. En el gráfico tridimensional, se analizaron variables como el material del piso, el número de cuartos y la fuente de energía para cocinar, lo que ofrece una perspectiva completa de la segmentación y las relaciones entre estas características.
+### Redes Neuronales
+Se implementaron redes neuronales con `tensorflow` para modelar relaciones complejas y no lineales entre las variables. La arquitectura incluyó:
+- Modelo 1: Entrada de 3 variables, 2 capas ocultas y 5 neuronas de salida.
+- Modelo 2: Entrada de 4 variables, 2 capas ocultas y 6 neuronas de salida.
+
+---
 
 ## 4. Instrucciones de Ejecución
 
-1. **Preparación del Entorno**: Asegurarse de tener R y RStudio instalados.
-2. **Instalación de Bibliotecas**: Instalar las bibliotecas requeridas (`readxl`, `arules`, `ggplot2`, `plotly`) usando la función `install.packages()` en R.
-3. **Carga de Datos**: Colocar el archivo `Datos Hogares INE.xlsx` en la ruta especificada en el código. Esta ubicación debe coincidir con la estructura de carpetas del proyecto en RStudio.
-4. **Ejecución Secuencial**: Ejecutar el código en el orden indicado, primero el preprocesamiento, luego el análisis de reglas de asociación y finalmente el clustering. Asegurarse de escalar los datos antes de aplicar K-Means para obtener resultados precisos.
-5. **Visualización de Resultados**: Los gráficos generados en RStudio mostrarán tanto la distribución bidimensional como tridimensional de los clústeres. Para la gráfica 3D, se utilizará `plotly` que permite una visualización interactiva de los datos.
+1. **Preparación del Entorno**:
+   - Instalar las bibliotecas requeridas (`rpart`, `randomForest`, `tensorflow`, `numpy`, `pandas`, `scikit-learn`).
+2. **Carga de Datos**:
+   - Colocar el archivo `Datos Hogares INE.xlsx` en la ruta especificada.
+3. **Ejecución**:
+   - Para árboles de decisión: Ejecutar el script `Arboles de decisión.R`.
+   - Para bosques aleatorios: Ejecutar el script `Bosques aleatorios.R`.
+   - Para redes neuronales: Ejecutar el script `redes_neuronales.py`.
+4. **Interpretación de Resultados**:
+   - Los gráficos y métricas de desempeño serán generados automáticamente por cada script.
+
+---
 
 ## 5. Recomendaciones de Replicación
 
-Para replicar los resultados, es importante:
-
-- Mantener los parámetros de soporte y confianza en el algoritmo Apriori, ya que estos afectan la frecuencia y relevancia de las reglas encontradas.
-- Utilizar el mismo valor de semilla en K-Means para asegurar que los resultados de clustering sean reproducibles.
-- Revisar la integridad del archivo `Datos Hogares INE.xlsx`, asegurándose de que no haya alteraciones en el formato original.
-
+1. **Parámetros Consistentes**:
+   - Mantener la misma semilla de aleatoriedad en cada ejecución para garantizar resultados reproducibles.
+2. **Evaluación de Modelos**:
+   - Validar los modelos utilizando técnicas como la validación cruzada para garantizar su capacidad de generalización.
+3. **Documentación del Proceso**:
+   - Registrar las configuraciones, métricas y gráficos generados para facilitar el análisis posterior.

@@ -30,6 +30,7 @@ bosque1 <- randomForest(P02B05 ~
                        ntree = 100,
                        mtry = 3)
 
+
 plot(bosque1)
 # Predicción sobre el conjunto de test
 entreno <- predict(bosque1, test)
@@ -89,7 +90,7 @@ test <- data[-index, ]
 
 # Tratamiento al agua para beber(P02B04) dependiendo de Material predominante del piso(P02A04), 
 # Tipo de servicio sanitario(P02B07),  Cuantas personas residen habitualmente(P01B04)
-# Fuente de energia para cocinar(P02B05).
+  # Fuente de energia para cocinar(P02B05).
 bosque2 <- randomForest(P02B04 ~ 
                           P02A04 + 
                           P02B07 + 
